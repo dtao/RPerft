@@ -1,4 +1,4 @@
-# Rperft
+# RPerft
 
 TODO: Write a gem description
 

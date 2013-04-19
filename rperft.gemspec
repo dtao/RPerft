@@ -5,12 +5,11 @@ require 'rperft/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "rperft"
-  spec.version       = Rperft::VERSION
+  spec.version       = RPerft::VERSION
   spec.authors       = ["Dan Tao"]
   spec.email         = ["daniel.tao@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{A Ruby gem to measure performance and submit results to Perft}
+  spec.summary       = %q{I forget, is the description supposed to be longer than the summary?}
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -18,6 +17,6 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake"
+  spec.add_dependency "httparty"
+  spec.add_dependency "json"
 end

@@ -1,3 +1,4 @@
+require "benchmark"
 require "httparty"
 require "json"
 require "yaml"

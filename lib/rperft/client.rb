@@ -1,7 +1,11 @@
+require "httparty"
+require "json"
 require "yaml"
 
 module RPerft
   class Client
+    include HTTParty
+
     class TestResult
       attr_reader :description, :benchmark
 
@@ -18,6 +22,14 @@ module RPerft
     def configure!(config_path)
       config_path ||= guess_config_path(caller)
       @configuration = YAML.load_file(config_path)
+
+      @host    = @configuration["host"]
+      @project = @configuration["project"]
+      @machine = @configuration["machine"]
+      @api_key = @configuration["api_key"]
+
+      RPerft::Client.base_uri @host
+      RPerft::Client.basic_auth @machine, @api_key
     end
 
     def configured?
@@ -29,7 +41,16 @@ module RPerft
     end
 
     def submit_results
-      
+      configure! if !configured?
+
+      data = @test_results.map do |result|
+        {
+          :description     => result.description,
+          :elapsed_seconds => result.benchmark.total
+        }
+      end
+
+      RPerft::Client.post("/projects/#{@machine}", :body => data)
     end
 
     protected

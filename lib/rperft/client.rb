@@ -15,7 +15,8 @@ module RPerft
       end
     end
 
-    def initialize
+    def initialize(name)
+      @name = name
       @test_results = []
     end
 
@@ -43,14 +44,16 @@ module RPerft
     def submit_results
       configure! if !configured?
 
-      data = @test_results.map do |result|
+      results = @test_results.map do |result|
         {
           :description     => result.description,
           :elapsed_seconds => result.benchmark.total
         }
       end
 
-      RPerft::Client.post("/projects/#{@machine}", :body => data)
+      RPerft::Client.post("/projects/#{@project}/#{@name}", :body => {
+        :results => results
+      })
     end
 
     protected

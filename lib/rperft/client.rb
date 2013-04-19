@@ -21,7 +21,7 @@ module RPerft
       @test_results = []
     end
 
-    def configure!(config_path)
+    def configure!(config_path=nil)
       config_path ||= guess_config_path(caller)
       @configuration = YAML.load_file(config_path)
 

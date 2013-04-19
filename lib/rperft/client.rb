@@ -1,4 +1,5 @@
 require "benchmark"
+require "cgi"
 require "httparty"
 require "json"
 require "yaml"
@@ -52,17 +53,20 @@ module RPerft
         }
       end
 
-      RPerft::Client.post("/projects/#{@project}/#{@name}", :body => {
-        :results => results
+      RPerft::Client.post("/projects/#{@project}/#{CGI.escape(@name)}", {
+        :body => { :results => results }
       })
     end
 
     protected
 
     def guess_config_path(context)
-      # Who knows? Maybe there will be a .perft-config file in the working
-      # directory.
-      File.join(File.dirname(context.first), ".perft-config")
+      # Now this is insanity -- trying to guess where we're coming from by
+      # finding the first line of the call stack that does *not* refer to
+      # RPerft.
+      origin = context.find { |line| line.match(/RPerft/).nil? }
+      origin = File.join(Dir.pwd, origin) unless origin.start_with?("/")
+      File.join(File.dirname(origin), ".perft-config")
     end
   end
 end

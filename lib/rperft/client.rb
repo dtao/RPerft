@@ -9,11 +9,11 @@ module RPerft
     include HTTParty
 
     class TestResult
-      attr_reader :description, :benchmark
+      attr_reader :description, :elapsed_seconds
 
-      def initialize(description, &block)
+      def initialize(description, elapsed_seconds)
         @description = description
-        @benchmark = Benchmark.measure(&block)
+        @elapsed_seconds = elapsed_seconds
       end
     end
 
@@ -42,7 +42,12 @@ module RPerft
     end
 
     def run_test(description, &block)
-      @test_results << TestResult.new(description, &block)
+      measurement = Benchmark.measure(&block)
+      @test_results << TestResult.new(description, measurement.total)
+    end
+
+    def add_result(description, elapsed_seconds)
+      @test_results << TestResult.new(description, elapsed_seconds)
     end
 
     def submit_results
@@ -51,7 +56,7 @@ module RPerft
       results = @test_results.map do |result|
         {
           :description     => result.description,
-          :elapsed_seconds => result.benchmark.total
+          :elapsed_seconds => result.elapsed_seconds
         }
       end
 

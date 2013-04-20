@@ -20,6 +20,7 @@ module RPerft
     def initialize(name)
       @name = name
       @test_results = []
+      @configuration = nil
     end
 
     def configure!(config_path=nil)
@@ -61,7 +62,10 @@ module RPerft
       end
 
       RPerft::Client.post("/projects/#{@project}/#{CGI.escape(@name)}", {
-        :body => { :results => results }
+        :body => { :results => results },
+        :headers => {
+          "Content-Type" => "application/x-www-form-urlencoded"
+        }
       })
     end
   end

@@ -1,7 +1,12 @@
+require "rspec/core/formatters/base_text_formatter"
+
 module RPerft
   class Formatter < RSpec::Core::Formatters::BaseTextFormatter
-    def initialize(client)
-      @client = client
+    def initialize(*args)
+      super
+
+      # Need to read up on how to do this properly.
+      @client = RPerft::Client.new("Performance Tests")
     end
 
     def example_started(example)
@@ -10,6 +15,10 @@ module RPerft
 
     def example_passed(example)
       @client.add_result(example.description, Time.now - @current_example_started)
+    end
+
+    def dump_summary(*args)
+      @client.submit_results
     end
   end
 end

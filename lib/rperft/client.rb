@@ -51,7 +51,7 @@ module RPerft
       @test_results << TestResult.new(description, elapsed_seconds)
     end
 
-    def submit_results
+    def submit_results(comment)
       configure! if !configured?
 
       results = @test_results.map do |result|
@@ -62,7 +62,10 @@ module RPerft
       end
 
       RPerft::Client.post("/projects/#{@project}/#{CGI.escape(@name)}", {
-        :body => { :results => results },
+        :body => {
+          :comment => comment,
+          :results => results
+        },
         :headers => {
           "Content-Type" => "application/x-www-form-urlencoded"
         }

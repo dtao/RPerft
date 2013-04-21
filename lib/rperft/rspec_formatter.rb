@@ -18,7 +18,7 @@ module RPerft
     end
 
     def dump_summary(*args)
-      @client.submit_results
+      @client.submit_results(`git log --oneline HEAD^..HEAD`)
     end
   end
 end

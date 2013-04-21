@@ -1,12 +1,12 @@
 require "rspec/core/formatters/base_text_formatter"
 
 module RPerft
-  class Formatter < RSpec::Core::Formatters::BaseTextFormatter
+  class RSpecFormatter < RSpec::Core::Formatters::BaseTextFormatter
     def initialize(*args)
       super
 
-      # Need to read up on how to do this properly.
-      @client = RPerft::Client.new("Performance Tests")
+      # Need to figure out a way to make this configurable.
+      @client = RPerft::Client.new("RSpec Performance Tests")
     end
 
     def example_started(example)

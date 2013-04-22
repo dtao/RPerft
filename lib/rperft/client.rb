@@ -51,8 +51,15 @@ module RPerft
       @test_results << TestResult.new(description, elapsed_seconds)
     end
 
-    def submit_results(comment)
+    def submit_results
       configure! if !configured?
+
+      if (`git status --porcelain`).empty?
+        changeset, comment = `git log --oneline HEAD^..HEAD`.split(/\s+/, 2)
+      else
+        changeset = "HEAD"
+        comment = "(work in progress)"
+      end
 
       results = @test_results.map do |result|
         {
@@ -63,8 +70,9 @@ module RPerft
 
       RPerft::Client.post("/projects/#{@project}/#{CGI.escape(@name)}", {
         :body => {
-          :comment => comment,
-          :results => results
+          :changeset => changeset,
+          :comment   => comment,
+          :results   => results
         },
         :headers => {
           "Content-Type" => "application/x-www-form-urlencoded"

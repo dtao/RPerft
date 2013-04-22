@@ -10,15 +10,18 @@ module RPerft
     end
 
     def example_started(example)
+      super
       @current_example_started = Time.now
     end
 
     def example_passed(example)
+      super
       @client.add_result(example.description, Time.now - @current_example_started)
     end
 
     def dump_summary(*args)
-      @client.submit_results(`git log --oneline HEAD^..HEAD`)
+      super
+      @client.submit_results
     end
   end
 end

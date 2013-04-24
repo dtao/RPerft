@@ -54,11 +54,10 @@ module RPerft
     def submit_results
       configure! if !configured?
 
+      changeset = nil
+      comment   = nil
       if (`git status --porcelain`).empty?
         changeset, comment = `git log --oneline HEAD^..HEAD`.split(/\s+/, 2)
-      else
-        changeset = "HEAD"
-        comment = "(work in progress)"
       end
 
       results = @test_results.map do |result|

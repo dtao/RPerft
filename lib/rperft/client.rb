@@ -17,9 +17,9 @@ module RPerft
       end
     end
 
-    def initialize(name)
-      @name = name
-      @test_results = []
+    def initialize(suite_name)
+      @suite_name    = suite_name
+      @test_results  = []
       @configuration = nil
     end
 
@@ -56,8 +56,11 @@ module RPerft
 
       changeset = nil
       comment   = nil
+      changes   = nil
+
       if (`git status --porcelain`).empty?
         changeset, comment = `git log --oneline HEAD^..HEAD`.split(/\s+/, 2)
+        changes = `git diff HEAD^`
       end
 
       results = @test_results.map do |result|
@@ -67,11 +70,12 @@ module RPerft
         }
       end
 
-      RPerft::Client.post("/projects/#{@project}/#{CGI.escape(@name)}", {
+      RPerft::Client.post("/projects/#{@project}/#{CGI.escape(@suite_name)}", {
         :body => {
+          :results   => results,
           :changeset => changeset,
           :comment   => comment,
-          :results   => results
+          :changes   => changes
         },
         :headers => {
           "Content-Type" => "application/x-www-form-urlencoded"

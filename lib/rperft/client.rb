@@ -75,7 +75,7 @@ module RPerft
           :description     => result.description,
           :elapsed_seconds => result.elapsed_seconds,
           :repetitions     => result.repetitions,
-          :tags            => results.tags
+          :tags            => result.tags
         }
       end
 

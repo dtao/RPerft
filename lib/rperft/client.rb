@@ -79,7 +79,7 @@ module RPerft
         }
       end
 
-      RPerft::Client.post("/projects/#{@project}/#{CGI.escape(@suite_name)}", {
+      response = RPerft::Client.post("/projects/#{@project}/#{CGI.escape(@suite_name)}", {
         :body => {
           :results   => results,
           :changeset => changeset,
@@ -90,6 +90,9 @@ module RPerft
           "Content-Type" => "application/x-www-form-urlencoded"
         }
       })
+
+      require "pry"; binding.pry
+      response_data = JSON.parse(response.body)
     end
   end
 end

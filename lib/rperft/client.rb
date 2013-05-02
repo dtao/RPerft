@@ -76,6 +76,7 @@ module RPerft
           :elapsed_seconds => result.elapsed_seconds,
           :repetitions     => result.repetitions,
           :tags            => results.tags
+        }
       end
 
       RPerft::Client.post("/projects/#{@project}/#{CGI.escape(@suite_name)}", {

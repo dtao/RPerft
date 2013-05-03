@@ -58,14 +58,13 @@ module RPerft
       @test_results << result
     end
 
-    def submit_results
+    def submit_results(options={})
       configure! if !configured?
 
       changeset = nil
       comment   = nil
-      changes   = nil
 
-      if (`git status --porcelain`).empty?
+      if options[:final] || (`git status --porcelain`).empty?
         changeset, comment = `git log --oneline HEAD^..HEAD`.split(/\s+/, 2)
         changes = `git diff HEAD^`
       end

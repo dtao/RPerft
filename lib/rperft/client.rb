@@ -85,7 +85,8 @@ module RPerft
           :results   => results,
           :changeset => changeset,
           :comment   => comment,
-          :changes   => changes
+          :changes   => changes,
+          :append    => options[:append]
         },
         :headers => {
           "Content-Type" => "application/x-www-form-urlencoded"

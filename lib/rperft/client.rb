@@ -68,7 +68,7 @@ module RPerft
         changeset, comment = `git log --oneline HEAD^..HEAD`.split(/\s+/, 2)
       end
 
-      changes = `git diff HEAD HEAD^`
+      changes = `git diff HEAD^ HEAD`
 
       results = @test_results.map do |result|
         {

@@ -84,6 +84,7 @@ module RPerft
         :body => {
           :results   => results,
           :changeset => changeset,
+          :version   => options[:version],
           :comment   => comment,
           :changes   => changes,
           :append    => options[:append]
